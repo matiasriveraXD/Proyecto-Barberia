@@ -22,7 +22,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 1. Pantalla de presentación (Se muestra al entrar)
+  // 1. Pantalla de presentación 
   if (mostrarSplash) {
     return (
       <SafeAreaView style={styles.containerSplash}>
@@ -36,7 +36,7 @@ export default function App() {
     );
   }
 
-  // 2. ¡Acá está la página web! Reemplaza todo tras los 2.5 segundos
+  // 2. la página web
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0a192f" />
