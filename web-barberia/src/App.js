@@ -46,7 +46,7 @@ export default function App() {
   const barberos = ['Franco', 'Mateo', 'Lucas'];
   const horarios = ['09:00', '10:00', '11:00', '15:00', '16:00', '17:00'];
 
-  // Escucha cambios de la base de datos en tiempo real
+  // cambios de la base de datos en tiempo real
   useEffect(() => {
     const unsubscribeTurnos = onSnapshot(collection(db, 'turnos'), (snapshot) => {
       const listaTurnos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -112,22 +112,41 @@ export default function App() {
     return dias;
   };
 
-  // Guarda un nuevo turno en Firestore
+  // Guarda un nuevo turno 
   const handleReservar = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita que la página se recargue sola
     if (!selectedDate || !selectedService || !selectedBarber || !selectedTime || !clientName) return;
 
     try {
+      // Convertimos la fecha seleccionada al formato de texto en que se guarda
+      const fechaFormateada = selectedDate.toLocaleDateString('es-AR');
+
+    
+      const turnoOcupado = turnosRegistrados.some(turno => 
+        turno.barbero === selectedBarber &&
+        turno.fecha === fechaFormateada &&
+        turno.hora === selectedTime &&
+        turno.estado !== 'Anulado'
+      );
+
+      // Si el turno ya existe con ese barbero a esa hora, frenamos el proceso
+      if (turnoOcupado) {
+        alert(`⚠️ Horario no disponible: El barbero ${selectedBarber} ya tiene un turno asignado el día ${fechaFormateada} a las ${selectedTime} hs.`);
+        return; // Detiene la función y no guarda nada en Firebase
+      }
+
+      
       await addDoc(collection(db, 'turnos'), {
         cliente: clientName,
         servicio: selectedService,
         barbero: selectedBarber,
-        fecha: selectedDate.toLocaleDateString('es-AR'),
+        fecha: fechaFormateada,
         hora: selectedTime,
         estado: 'Pendiente',
         timestamp: Date.now()
       });
 
+      
       setSuccessMessage(true);
       setClientName('');
       setSelectedService('');
@@ -136,7 +155,8 @@ export default function App() {
       setSelectedDate(null);
       setTimeout(() => setSuccessMessage(false), 4000);
     } catch (error) {
-      console.error(error);
+      console.error("Error al verificar o guardar el turno:", error);
+      alert("Hubo un error al procesar la reserva.");
     }
   };
 
