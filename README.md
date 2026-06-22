@@ -24,11 +24,11 @@ Cómo ejecutar el proyecto
 1.	Clonar el repositorio: Abrir la terminal y escribir: git clone [https://github.com/matiasriveraXD/Proyecto-Barberia.git](https://github.com/matiasriveraXD/Proyecto-Barberia.git)
 2.	Ejecutar la Web:
 o	cd Proyecto-Barberia/web-barberia
-
-Video de la app final: https://drive.google.com/file/d/1XUWv3DEe4L8TmqffkgpyrGitOgPoakAr/view?usp=sharing 
 o	npm install
 o	npm start (Esto abrirá la web en el navegador).
 4.	Ejecutar la App (Modo desarrollo):
 o	cd ../app-cliente
 o	npm install
 o	npx expo start (Se generará un código QR que se puede escanear con la app Expo Go en cualquier celular).
+
+Video de la app final: https://drive.google.com/file/d/1XUWv3DEe4L8TmqffkgpyrGitOgPoakAr/view?usp=sharing 
